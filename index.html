@@ -8,12 +8,18 @@
         body {
             margin: 0;
         }
+        #game {
+            width:800px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
+    <div id="game" ></div>
+</body>
 
 <script type="text/javascript">
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
 
 var playerpet;
@@ -26,10 +32,9 @@ function preload() {
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.spritesheet('star', 'assets/baddie.png',32,32);
-    game.load.spritesheet('dude', 'assets/chibiusa.png', 32,48);
-    game.load.spritesheet('pet', 'assets/bahamut.png', 96, 96);
+    game.load.spritesheet('dude', 'assets/chibiusa.png', 32,45);
+    game.load.spritesheet('pet', 'assets/bahamut.png', 96, 93);
 }
-
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -42,43 +47,7 @@ function update(){
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(playerpet, platforms);
     game.physics.arcade.collide(stars, platforms);
-     player.body.velocity.x = 0;
-     playerpet.body.velocity.x = 0;
-
-    if (cursors.left.isDown)
-    {
-        //  Move to the left
-        player.body.velocity.x = -150;
-        player.animations.play('left');
-
-        playerpet.body.velocity.x = -150;
-        playerpet.animations.play('left');
-    }
-    else if (cursors.right.isDown)
-    {
-        //  Move to the right
-        player.body.velocity.x = 150;
-        player.animations.play('right');
-        playerpet.body.velocity.x = 150;
-        playerpet.animations.play('right'); 
-    }
-    else
-    {
-        //  Stand still
-        player.animations.play('stop');
-        playerpet.animations.play('stop');
-
-    }
-    
-    //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -350;
-        playerpet.body.velocity.y = -350;
-    } else if(cursors.down.isDown){
-        player.body.velocity.y = 350;
-        playerpet.body.velocity.y = 350;
-    }
+    player_control(); 
 }
 
 
@@ -91,8 +60,18 @@ function create_environment(){
     
     var ledge = platforms.create(400,400,'ground');
     ledge.body.immovable = true;
-    var ledge = platforms.create(-150,250,'ground');
+    
+    var ledge = platforms.create(-130,400,'ground');
     ledge.body.immovable = true;
+
+    var ledge = platforms.create(140,250,'ground');
+    ledge.body.immovable = true;
+
+
+    var ledge = platforms.create(150,150,'ground');
+    ledge.body.immovable = true;
+
+
     var ground = platforms.create(0, game.world.height - 64, 'ground');
     ground.scale.setTo(2, 2);
     ground.body.immovable = true;
@@ -138,7 +117,43 @@ function create_player(){
 
 
 function player_control(){
- 
+     player.body.velocity.x = 0;
+     playerpet.body.velocity.x = 0;
+
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
+        player.animations.play('left');
+
+        playerpet.body.velocity.x = -150;
+        playerpet.animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
+        player.animations.play('right');
+        playerpet.body.velocity.x = 150;
+        playerpet.animations.play('right'); 
+    }
+    else
+    {
+        //  Stand still
+        player.animations.play('stop');
+        playerpet.animations.play('stop');
+
+    }
+    
+    //  Allow the player to jump if they are touching the ground.
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.body.velocity.y = -350;
+        playerpet.body.velocity.y = -350;
+    } else if(cursors.down.isDown){
+        player.body.velocity.y = 350;
+        playerpet.body.velocity.y = 350;
+    }
      
 }
 
@@ -146,5 +161,6 @@ function player_control(){
 
 </script>
 
-</body>
+
+
 </html>
